@@ -1,42 +1,52 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>O App do Pobre - Domine seu Dinheiro</title>
+    <title>O App do Pobre - O Controle Financeiro Definitivo</title>
     
     <script>
-        if (localStorage.getItem('landpage_pobre_acessada') === 'true') {
+        if (localStorage.getItem('landpage_app_pobre_acessada') === 'true') {
             window.location.replace('https://oappdopobre.oseuapp.workers.dev/');
         }
     </script>
 
     <link rel="icon" href="logo.png" type="image/jpeg">
+    <link rel="apple-touch-icon" href="logo.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            /* Mesma paleta do App Original */
+            /* Paleta Oficial idêntica ao App Original */
             --primary: #2563EB; 
             --primary-glow: rgba(37, 99, 235, 0.25);
             --income: #16A34A; 
             --expense: #DC2626; 
+            
             --bg-base: #121212; 
             --text-main: #F3F4F6; 
             --text-sec: #9CA3AF; 
+            
             --glass-surface: #1E1E24; 
             --glass-border: rgba(255, 255, 255, 0.08);
             --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            
             --radius-card: 20px;
         }
 
-        * { box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
         
         body {
             background-color: var(--bg-base);
-            /* Gradiente dinâmico no fundo */
-            background-image: radial-gradient(at 50% 0%, rgba(37, 99, 235, 0.2) 0px, transparent 60%);
+            /* Fundo idêntico ao do App */
+            background-image: radial-gradient(at 50% 0%, rgba(37, 99, 235, 0.15) 0px, transparent 70%);
             background-attachment: fixed;
             margin: 0; padding: 0;
             color: var(--text-main);
@@ -51,12 +61,18 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            animation: fadeIn 0.6s ease-out;
         }
 
-        header { text-align: center; }
-        header h1 { font-size: 2.2rem; margin: 0 0 10px; font-weight: 800; letter-spacing: -1px; }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        header { text-align: center; margin-bottom: 5px; }
+        header h1 { font-size: 2.4rem; margin: 0 0 10px; font-weight: 800; letter-spacing: -1px; }
         header h1 span { color: var(--primary); }
-        header p { color: var(--text-sec); font-size: 0.95rem; line-height: 1.5; margin: 0; }
+        header p { color: var(--text-sec); font-size: 0.95rem; line-height: 1.5; margin: 0; padding: 0 10px;}
 
         .card {
             background: var(--glass-surface);
@@ -68,154 +84,105 @@
             -webkit-backdrop-filter: blur(30px);
         }
 
-        /* Prova Social */
+        /* Prova Social baseada nas Métricas reais fornecidas */
         .social-proof {
             display: flex; align-items: center; justify-content: center; gap: 8px;
             background: rgba(22, 163, 74, 0.1);
             color: var(--income);
-            padding: 8px 12px;
+            padding: 10px 16px;
             border-radius: 50px;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             font-weight: 700;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
             width: fit-content;
             border: 1px solid rgba(22, 163, 74, 0.2);
+            text-align: center;
         }
 
         .features { list-style: none; padding: 0; margin: 0 0 25px; }
-        .features li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-sec); line-height: 1.4; }
-        .features li b { color: var(--text-main); display: block; margin-bottom: 2px; }
-        .features i { color: var(--primary); font-size: 1.2rem; margin-top: 2px; width: 20px; text-align: center; }
+        .features li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; font-size: 0.9rem; color: var(--text-sec); line-height: 1.4; }
+        .features li b { color: var(--text-main); display: block; margin-bottom: 3px; font-size: 0.95rem; }
+        .features i { color: var(--primary); font-size: 1.3rem; margin-top: 2px; width: 24px; text-align: center; }
 
-        /* Botões */
+        /* Botão Principal */
         button {
             width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 700;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-            font-size: 1rem; transition: transform 0.1s, opacity 0.2s;
+            font-size: 1rem; transition: transform 0.1s, background 0.2s;
         }
         button:active { transform: scale(0.98); }
         
-        .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 15px var(--primary-glow); margin-bottom: 12px; }
-        .btn-offline { background: #2A2A35; color: #fff; border: 1px solid var(--glass-border); }
+        .btn-primary { 
+            background: var(--primary); 
+            color: #fff; 
+            box-shadow: 0 4px 15px var(--primary-glow); 
+        }
+        .btn-primary:hover { background: #1d4ed8; }
         
         .metrics-text {
-            text-align: center; font-size: 0.75rem; color: var(--text-sec);
-            line-height: 1.6; padding-top: 15px; border-top: 1px solid var(--glass-border);
-            margin-top: 10px;
+            text-align: center; font-size: 0.8rem; color: var(--text-sec);
+            line-height: 1.6; padding-top: 20px; border-top: 1px solid var(--glass-border);
+            margin-top: 25px;
         }
 
-        /* Toast de notificação */
-        #toast { 
-            position: fixed; top: -50px; left: 50%; transform: translateX(-50%); 
-            background: #333; color: #fff; padding: 12px 24px; border-radius: 50px; 
-            opacity: 0; z-index: 5000; transition: 0.3s; font-size: 0.85rem; font-weight: 600; 
-            pointer-events: none; white-space: nowrap; box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
-        }
+        .metrics-text b { color: var(--text-main); }
     </style>
 </head>
 <body>
 
-    <div id="toast">Notificação</div>
-
     <div class="container">
         <header>
             <h1>O App do <span>Pobre</span></h1>
-            <p>O controle financeiro feito para quem quer parar de perder dinheiro sem abrir mão da privacidade.</p>
+            <p>O controle financeiro direto ao ponto. Sem anúncios chatos e sem roubar os seus dados.</p>
         </header>
 
         <div class="card">
             <div class="social-proof">
-                <i class="fas fa-chart-line"></i> +21.000 visualizações e crescendo
+                <i class="fas fa-fire"></i> +21.000 visualizações no TikTok
             </div>
             
             <ul class="features">
                 <li>
-                    <i class="fas fa-lock"></i>
+                    <i class="fas fa-user-shield"></i>
                     <div>
                         <b>Privacidade Absoluta</b>
-                        Nenhuma empresa espionando você. Seus dados ficam salvos apenas no seu celular (Local Storage).
+                        Seus dados financeiros não vão para nuvem nenhuma. Ficam apenas no seu aparelho.
                     </div>
                 </li>
                 <li>
                     <i class="fas fa-wifi"></i>
                     <div>
-                        <b>Funciona 100% Offline</b>
-                        Acesse, edite e acompanhe suas finanças sem precisar de internet ou criar contas.
+                        <b>100% Offline e Sem Assinatura</b>
+                        Acesse gráficos, projete metas e cadastre suas contas sem precisar de internet.
                     </div>
                 </li>
                 <li>
-                    <i class="fas fa-bullseye"></i>
+                    <i class="fas fa-sync-alt"></i>
                     <div>
-                        <b>Direto ao Ponto</b>
-                        Sem anúncios e sem mensalidades. Gráficos, metas e projeções limpas e fáceis de entender.
+                        <b>Automação de Contas Fixas</b>
+                        Cadastre despesas mensais uma vez e deixe o app calcular suas sobras automaticamente.
                     </div>
                 </li>
             </ul>
 
             <button class="btn-primary" onclick="acessarApp()">
-                <i class="fas fa-rocket"></i> ABRIR O APP (DEMONSTRAÇÃO)
-            </button>
-            <button class="btn-offline" onclick="baixarAppHTML()">
-                <i class="fas fa-download"></i> BAIXAR APP COMPLETO (.HTML)
+                <i class="fas fa-rocket"></i> ABRIR O APLICATIVO AGORA
             </button>
             
             <div class="metrics-text">
-                <i class="fas fa-fire" style="color: #ff453a;"></i> Em alta em <b>SP, MG e RJ</b>.<br>
-                A ferramenta mais usada pela galera de 18 a 34 anos para botar a vida financeira nos trilhos.
+                Junte-se à maioria da galera de <b>18 a 34 anos</b> em <b>São Paulo, Minas Gerais e Rio de Janeiro</b> que já está dominando suas finanças.
             </div>
         </div>
     </div>
 
     <script>
-        function showToast(m) { 
-            const t = document.getElementById('toast'); 
-            t.innerText = m; t.style.opacity = 1; t.style.top = "30px";
-            setTimeout(() => { t.style.opacity = 0; t.style.top = "-50px"; }, 3000); 
-        }
-
-        // Função 1: Acessar a aplicação original e criar o bloqueio para a Landing Page não aparecer de novo
+        // Função para redirecionar para o app e registrar o acesso
         function acessarApp() {
-            localStorage.setItem('landpage_pobre_acessada', 'true');
+            // Marca no celular que o usuário já viu a Landpage
+            localStorage.setItem('landpage_app_pobre_acessada', 'true');
+            
+            // Redireciona para o aplicativo real (onde ele poderá fazer o Download HTML sem problemas)
             window.location.href = 'https://oappdopobre.oseuapp.workers.dev/';
-        }
-
-        // Função 2: Fazer download do HTML estático baseando-se no código do app
-        async function baixarAppHTML() {
-            showToast("Buscando os arquivos do app...");
-            try {
-                // Tenta puxar o código do app hospedado no workers
-                const res = await fetch('https://oappdopobre.oseuapp.workers.dev/');
-                if (!res.ok) throw new Error("Erro na rede");
-                
-                let htmlContent = await res.text();
-                
-                // Tratamento de reset (mesmo regex de segurança usado no app original)
-                const injectPattern = /const\s+BACKUP_EMBUTIDO\s*=\s*[\s\S]*?; \/\/ __MARKER_BACKUP__/;
-                const resetScript = `const BACKUP_EMBUTIDO = null; // __MARKER_BACKUP__`;
-                if (injectPattern.test(htmlContent)) { 
-                    htmlContent = htmlContent.replace(injectPattern, resetScript); 
-                } else { 
-                    htmlContent = htmlContent.replace(/const\s+BACKUP_EMBUTIDO\s*=\s*null;/, resetScript); 
-                }
-                
-                // Criação do Blob e Download
-                const blob = new Blob([htmlContent], {type: 'text/html'});
-                const a = document.createElement('a'); 
-                a.href = URL.createObjectURL(blob); 
-                a.download = `O_App_do_Pobre_Instalavel.html`; 
-                a.click();
-                
-                showToast("Download concluído com sucesso!");
-                
-                // Registra o uso para o usuário ir direto pro app futuramente
-                localStorage.setItem('landpage_pobre_acessada', 'true');
-
-            } catch(e) {
-                console.error(e);
-                // Caso ocorra bloqueio de CORS na fetch, direcionamos o user pro app avisando para baixar de lá.
-                showToast("Redirecionando para download interno...");
-                setTimeout(() => { acessarApp(); }, 2000);
-            }
         }
     </script>
 </body>
