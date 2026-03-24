@@ -3,44 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <title>O App do Pobre | Controle Financeiro Offline e Privado</title>
+    <title>O App do Pobre · Controle Financeiro Inteligente e Privado</title>
     
     <script>
-        // Redirecionamento automático se o usuário já conhecer o app
-        if (localStorage.getItem('landpage_app_pobre_acessada') === 'true') {
+        // Redirecionamento automático para usuários recorrentes
+        if (localStorage.getItem('landpage_app_pobre_acessada') === 'true' && !window.location.search.includes('bypass')) {
             window.location.replace('https://oappdopobre.oseuapp.workers.dev/');
         }
     </script>
 
-    <meta name="description" content="O gerenciador financeiro feito para a vida real. 100% offline, sem anúncios, instalável no PC e Celular (PWA) e com privacidade absoluta.">
-    <meta name="keywords" content="app financeiro, controle de gastos, finanças pessoais, app offline, PWA, privacidade, relatórios financeiros">
+    <meta name="description" content="O gerenciador financeiro feito para a vida real. 100% gratuito, funciona offline, sem anúncios, com gráficos inteligentes e privacidade absoluta.">
+    <meta name="keywords" content="controle financeiro, app de finanças, organizador de contas, app offline, finanças pessoais, pwa, privacidade">
     <meta name="author" content="O App do Pobre">
     <meta name="theme-color" content="#0f172a">
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
             --primary: #3B82F6;
-            --primary-hover: #2563eb;
+            --primary-dark: #2563eb;
             --primary-glow: rgba(59, 130, 246, 0.4);
             --income: #10B981;
             --expense: #EF4444;
-            
             --bg-base: #0F172A;
-            --bg-surface: #1E293B;
+            --bg-sec: #1E293B;
             --text-main: #F8FAFC;
             --text-sec: #94A3B8;
-            
             --glass-bg: rgba(30, 41, 59, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --radius-lg: 24px;
-            --radius-md: 16px;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 24px 40px -12px rgba(0, 0, 0, 0.5);
+            --radius-card: 24px;
         }
 
         * {
@@ -48,360 +47,500 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--bg-base);
-            font-family: 'Inter', sans-serif;
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
-            position: relative;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.1), transparent 25%);
+            background-attachment: fixed;
         }
 
-        /* Efeitos de Fundo Modernos */
-        .bg-glow {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-            top: -200px;
-            left: -200px;
-            border-radius: 50%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .bg-glow-right {
-            position: fixed;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
-            bottom: -100px;
-            right: -100px;
-            border-radius: 50%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Header / Nav */
+        /* Navbar */
         header {
-            padding: 32px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 16px 24px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: fadeDown 0.8s ease;
+            z-index: 1000;
         }
 
         .logo {
             font-weight: 800;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            letter-spacing: -0.5px;
+            gap: 8px;
+            color: var(--text-main);
+            text-decoration: none;
         }
 
         .logo i {
             color: var(--primary);
         }
 
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-sec {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-sec:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        .btn-install {
+            background: var(--income);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            display: none; /* Shown via JS if PWA is installable */
+        }
+
+        .btn-install:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
         /* Hero Section */
         .hero {
-            padding: 80px 0 60px;
-            text-align: center;
-            animation: fadeUp 1s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 120px 24px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(59, 130, 246, 0.15);
+            background: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.3);
-            color: #60A5FA;
-            padding: 8px 16px;
+            color: var(--primary);
+            padding: 6px 16px;
             border-radius: 100px;
             font-size: 0.85rem;
             font-weight: 600;
             margin-bottom: 24px;
         }
 
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 800;
             line-height: 1.1;
-            letter-spacing: -1px;
+            letter-spacing: -0.03em;
             margin-bottom: 20px;
         }
 
-        .hero h1 span {
-            background: linear-gradient(135deg, #60A5FA, #3B82F6);
+        .hero-text h1 span {
+            background: linear-gradient(135deg, #3B82F6, #10B981);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-sec);
-            max-width: 650px;
-            margin: 0 auto 40px;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: var(--primary);
-            color: white;
-            font-weight: 700;
+        .hero-text p {
             font-size: 1.1rem;
-            padding: 20px 40px;
-            border-radius: 100px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+            color: var(--text-sec);
+            margin-bottom: 32px;
+            max-width: 500px;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
-            background: var(--primary-hover);
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
+        .hero-actions .btn {
+            padding: 16px 28px;
+            font-size: 1.05rem;
+            border-radius: 16px;
         }
 
-        /* Features Grid */
+        /* Floating App Mockup (CSS Only) */
+        .app-mockup {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-card);
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+            transition: transform 0.5s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: perspective(1000px) rotateY(-5deg) rotateX(5deg) translateY(0px); }
+            50% { transform: perspective(1000px) rotateY(-5deg) rotateX(5deg) translateY(-15px); }
+            100% { transform: perspective(1000px) rotateY(-5deg) rotateX(5deg) translateY(0px); }
+        }
+
+        .mockup-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: var(--text-sec);
+        }
+        
+        .mockup-balance {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .mockup-chart {
+            height: 120px;
+            background: linear-gradient(180deg, rgba(59,130,246,0.2) 0%, transparent 100%);
+            border-bottom: 2px solid var(--primary);
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .mockup-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* Features Section */
         .features {
-            padding: 60px 0;
+            padding: 80px 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid var(--glass-border);
         }
 
-        .section-title {
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-header {
             text-align: center;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 48px;
+            margin-bottom: 60px;
+        }
+
+        .features-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .features-header p {
+            color: var(--text-sec);
+            font-size: 1.1rem;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
         }
 
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        .feature-card {
+            background: var(--bg-sec);
             border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            padding: 32px 24px;
+            border-radius: var(--radius-card);
+            transition: transform 0.3s ease;
         }
 
-        .card:hover {
+        .feature-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(59, 130, 246, 0.4);
+            border-color: var(--primary);
         }
 
-        .card-icon {
+        .feature-icon {
             width: 56px;
             height: 56px;
             background: rgba(59, 130, 246, 0.1);
-            border-radius: var(--radius-md);
+            color: var(--primary);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            color: #60A5FA;
             margin-bottom: 20px;
         }
 
-        .card h3 {
+        .feature-card h3 {
             font-size: 1.25rem;
-            font-weight: 700;
             margin-bottom: 12px;
         }
 
-        .card p {
+        .feature-card p {
             color: var(--text-sec);
             font-size: 0.95rem;
         }
 
-        /* Footer CTA */
-        .cta-bottom {
-            text-align: center;
-            padding: 80px 0;
-            border-top: 1px solid var(--glass-border);
-            margin-top: 40px;
-        }
-
-        .cta-bottom h2 {
-            font-size: 2.2rem;
-            margin-bottom: 24px;
-        }
-
+        /* Footer */
         footer {
             text-align: center;
-            padding: 32px 0;
+            padding: 40px 24px;
+            border-top: 1px solid var(--glass-border);
             color: var(--text-sec);
-            font-size: 0.85rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
         }
 
-        /* Animações */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 100px;
+                min-height: auto;
+            }
+            .hero-text p {
+                margin: 0 auto 32px;
+            }
+            .hero-actions {
+                justify-content: center;
+            }
+            .app-mockup {
+                transform: none;
+                animation: none;
+                max-width: 400px;
+                margin: 0 auto;
+            }
         }
 
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 768px) {
-            .hero { padding: 40px 0; }
-            .btn-primary { width: 100%; padding: 18px 20px; }
-            .card { padding: 24px; }
+        @media (max-width: 480px) {
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .hero-actions .btn {
+                width: 100%;
+            }
+            .features-header h2 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-    <div class="bg-glow-right"></div>
-
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-wallet"></i> O App do Pobre
-            </div>
-            <div style="font-size: 0.85rem; color: var(--text-sec); font-weight: 500;">
-                <i class="fas fa-check-circle" style="color: var(--income);"></i> 100% Grátis
-            </div>
-        </header>
-
-        <section class="hero">
-            <div class="badge">
-                <i class="fas fa-shield-alt"></i> Nenhuma conta de login necessária
-            </div>
-            <h1>O controle financeiro para a <span>vida real.</span></h1>
-            <p>Esqueça planilhas complexas e apps que vendem seus dados. Organize seu dinheiro com gráficos inteligentes, funcionamento offline e privacidade absoluta.</p>
-            
-            <button class="btn-primary" id="btnAcessarApp">
-                <i class="fas fa-rocket"></i> Acessar o App Agora
+    <header>
+        <a href="#" class="logo">
+            <i class="fas fa-leaf"></i> O App do Pobre
+        </a>
+        <div class="nav-actions">
+            <button class="btn btn-install" id="installBtnNav">
+                <i class="fas fa-download"></i> Instalar App
             </button>
-            
-            <div style="margin-top: 24px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-sec);">
-                <span><i class="fas fa-bolt" style="color: #F59E0B;"></i> Zero burocracia</span>
-                <span><i class="fas fa-ad" style="text-decoration: line-through; color: var(--expense);"></i> Sem anúncios</span>
-                <span><i class="fas fa-laptop-code" style="color: var(--primary);"></i> Código independente</span>
-            </div>
-        </section>
+            <a href="https://oappdopobre.oseuapp.workers.dev/" class="btn btn-primary" onclick="salvarAcesso()">
+                Acessar Web
+            </a>
+        </div>
+    </header>
 
-        <section class="features">
-            <h2 class="section-title">Por que o App do Pobre é diferente?</h2>
+    <section class="hero">
+        <div class="hero-text">
+            <div class="badge"><i class="fas fa-shield-alt"></i> Controle 100% Offline & Privado</div>
+            <h1>A sua vida financeira <span>sob controle.</span></h1>
+            <p>Esqueça as planilhas complicadas. Organize suas contas, projete seu futuro e saiba exatamente para onde vai seu dinheiro, sem depender de internet e sem expor seus dados.</p>
             
+            <div class="hero-actions">
+                <a href="https://oappdopobre.oseuapp.workers.dev/" class="btn btn-primary" onclick="salvarAcesso()">
+                    <i class="fas fa-rocket"></i> Começar Agora (Grátis)
+                </a>
+                <button class="btn btn-install" id="installBtnHero">
+                    <i class="fas fa-mobile-alt"></i> Adicionar à Tela Inicial
+                </button>
+            </div>
+            
+            <div style="margin-top: 24px; font-size: 0.8rem; color: var(--text-sec); display: flex; gap: 16px; justify-content: center; @media(min-width: 968px){justify-content: flex-start;}">
+                <span><i class="fas fa-check" style="color: var(--income)"></i> Sem assinaturas</span>
+                <span><i class="fas fa-check" style="color: var(--income)"></i> Sem anúncios</span>
+            </div>
+        </div>
+
+        <div class="app-mockup">
+            <div class="mockup-header">
+                <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px;">Saldo do Mês</span>
+                <i class="fas fa-eye"></i>
+            </div>
+            <div class="mockup-balance">R$ 2.450,00</div>
+            <div class="mockup-chart">
+                <div style="position: absolute; bottom: -5px; right: -5px; background: var(--income); color: white; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: bold;">+12% Renda</div>
+            </div>
+            <div class="mockup-item">
+                <div>
+                    <strong style="display: block;">Mercado e Feira</strong>
+                    <small style="color: var(--text-sec)">Hoje</small>
+                </div>
+                <strong style="color: var(--expense)">- R$ 180,00</strong>
+            </div>
+            <div class="mockup-item" style="border-bottom: none;">
+                <div>
+                    <strong style="display: block;">Salário Mensal</strong>
+                    <small style="color: var(--text-sec)">Ontem</small>
+                </div>
+                <strong style="color: var(--income)">+ R$ 3.200,00</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="features-container">
+            <div class="features-header">
+                <h2>Feito para a vida real</h2>
+                <p>Recursos de inteligência financeira pensados para quem trabalha duro todos os dias.</p>
+            </div>
+
             <div class="grid">
-                <div class="card">
-                    <div class="card-icon" style="color: #A855F7; background: rgba(168, 85, 247, 0.1);">
-                        <i class="fas fa-laptop-mobile"></i>
-                    </div>
-                    <h3>Desktop & Mobile (PWA)</h3>
-                    <p>Acesse do computador ou instale direto na tela inicial do seu celular. Ele se comporta como um app nativo, ocupando quase zero da sua memória.</p>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-wifi-slash"></i></div>
+                    <h3>Sempre Offline</h3>
+                    <p>Não gaste sua franquia de dados. O app funciona 100% offline, permitindo que você registre gastos na rua, no ônibus ou no mercado, sem depender de conexão.</p>
                 </div>
-
-                <div class="card">
-                    <div class="card-icon" style="color: #F59E0B; background: rgba(245, 158, 11, 0.1);">
-                        <i class="fas fa-wifi-slash"></i>
-                    </div>
-                    <h3>100% Offline</h3>
-                    <p>No metrô, na estrada ou sem pacote de dados. O app funciona perfeitamente sem internet. Você lança seus gastos na hora que eles acontecem.</p>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon" style="color: #10B981; background: rgba(16, 185, 129, 0.1);">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="color: #10B981; background: rgba(16, 185, 129, 0.1);"><i class="fas fa-lock"></i></div>
                     <h3>Privacidade Absoluta</h3>
-                    <p>O seu dinheiro é problema seu. Todos os seus dados ficam criptografados e salvos localmente no seu aparelho. Não usamos banco de dados na nuvem.</p>
+                    <p>Seu dinheiro é assunto seu. O banco de dados vive criptografado <strong>exclusivamente no seu celular</strong>. Sem servidores externos, sem rastreio de empresas.</p>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon" style="color: #EC4899; background: rgba(236, 72, 153, 0.1);">
-                        <i class="fas fa-chart-pie"></i>
-                    </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="color: #F59E0B; background: rgba(245, 158, 11, 0.1);"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Instale como App (PWA)</h3>
+                    <p>Adicione diretamente à tela inicial do seu celular. Ele se comporta como um app de loja nativo, mas roda levíssimo e ocupa quase zero da memória do aparelho.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon" style="color: #8B5CF6; background: rgba(139, 92, 246, 0.1);"><i class="fas fa-chart-pie"></i></div>
                     <h3>Gráficos Inteligentes</h3>
-                    <p>Entenda para onde vai o seu dinheiro. Visualizações claras por categoria, balanço do mês e relatórios profissionais em PDF para você baixar.</p>
+                    <p>Identifique os ralos de dinheiro. O app gera relatórios detalhados automaticamente e calcula uma média diária segura de gastos para você não fechar no vermelho.</p>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon" style="color: #3B82F6; background: rgba(59, 130, 246, 0.1);">
-                        <i class="fas fa-sync-alt"></i>
-                    </div>
-                    <h3>Automação de Contas</h3>
-                    <p>Registre a conta de luz, aluguel ou parcelamento do cartão apenas uma vez. O sistema projeta e agenda os próximos meses automaticamente.</p>
+                <div class="feature-card">
+                    <div class="feature-icon" style="color: #EC4899; background: rgba(236, 72, 153, 0.1);"><i class="fas fa-calendar-check"></i></div>
+                    <h3>Automação de Contas Fixas</h3>
+                    <p>Registre seu aluguel, internet ou assinaturas uma única vez. O app projeta os próximos meses automaticamente para você saber o que vem pela frente.</p>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon" style="color: #F43F5E; background: rgba(244, 63, 94, 0.1);">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3>Previsão do Bolso</h3>
-                    <p>O algoritmo aprende sua rotina de gastos e calcula um limite diário seguro, avisando se você corre o risco de terminar o mês no vermelho.</p>
+                <div class="feature-card">
+                    <div class="feature-icon" style="color: #0EA5E9; background: rgba(14, 165, 233, 0.1);"><i class="fas fa-file-pdf"></i></div>
+                    <h3>Relatórios em PDF e WhatsApp</h3>
+                    <p>Exporte um resumo profissional da sua inteligência financeira com um clique para salvar ou compartilhar seu balanço mensal em PDF ou texto direto no zap.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="cta-bottom">
-            <h2>Pronto para assumir o controle?</h2>
-            <p style="color: var(--text-sec); margin-bottom: 32px; font-size: 1.1rem;">Nenhuma assinatura. Nenhum cartão de crédito. Comece em 5 segundos.</p>
-            <button class="btn-primary" id="btnAcessarAppBottom" style="padding: 16px 32px; font-size: 1rem;">
-                Abrir Meu Organizador
-            </button>
-        </section>
-
-        <footer>
-            <p><strong>O App do Pobre</strong> &copy; 2026. Desenvolvido com foco na sua liberdade e privacidade financeira.</p>
-            <p style="margin-top: 8px; opacity: 0.7;">Os dados inseridos no aplicativo permanecem exclusivamente no seu dispositivo.</p>
-        </footer>
-    </div>
+    <footer>
+        <div style="font-size: 1.5rem; color: var(--primary); margin-bottom: 16px;"><i class="fas fa-leaf"></i></div>
+        <p><strong>O App do Pobre</strong> &copy; 2026. Código limpo e foco total na sua liberdade financeira.</p>
+        <p style="margin-top: 8px; opacity: 0.7;">Privacidade: Ninguém além de você tem acesso aos seus dados.</p>
+    </footer>
 
     <script>
-        (function() {
-            // URL do aplicativo principal
-            const APP_URL = 'https://oappdopobre.oseuapp.workers.dev/';
+        // Função para marcar no LocalStorage que o usuário já viu a Landpage
+        function salvarAcesso() {
+            localStorage.setItem('landpage_app_pobre_acessada', 'true');
+        }
 
-            function acessarApp(e) {
-                e.preventDefault();
-                // Marca no navegador que o usuário já viu a apresentação
-                localStorage.setItem('landpage_app_pobre_acessada', 'true');
-                
-                // Feedback visual do botão
-                const btn = e.currentTarget;
-                btn.style.transform = 'scale(0.96)';
-                
-                setTimeout(() => { 
-                    window.location.replace(APP_URL); 
-                }, 150);
+        // ================= LÓGICA DE INSTALAÇÃO PWA =================
+        let deferredPrompt;
+        const installBtnNav = document.getElementById('installBtnNav');
+        const installBtnHero = document.getElementById('installBtnHero');
+
+        // Escuta o evento que o navegador dispara quando identifica que o site é um PWA instalável
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Previne o mini-infobar padrão no mobile
+            e.preventDefault();
+            // Guarda o evento para ser ativado no clique do botão
+            deferredPrompt = e;
+            
+            // Exibe os botões de instalação
+            installBtnNav.style.display = 'inline-flex';
+            installBtnHero.style.display = 'inline-flex';
+        });
+
+        // Função para disparar a instalação
+        async function triggerInstall() {
+            if (deferredPrompt) {
+                // Mostra o prompt nativo do sistema
+                deferredPrompt.prompt();
+                // Aguarda a resposta do usuário
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Usuário aceitou a instalação do PWA');
+                    // Salva que o usuário instalou/acessou para não mostrar a landpage novamente
+                    salvarAcesso();
+                }
+                // Limpa o prompt
+                deferredPrompt = null;
+                // Esconde os botões após a interação
+                installBtnNav.style.display = 'none';
+                installBtnHero.style.display = 'none';
             }
+        }
 
-            // Atrela os eventos aos botões
-            document.getElementById('btnAcessarApp').addEventListener('click', acessarApp);
-            document.getElementById('btnAcessarAppBottom').addEventListener('click', acessarApp);
-        })();
+        // Atribui o evento de clique aos botões
+        installBtnNav.addEventListener('click', triggerInstall);
+        installBtnHero.addEventListener('click', triggerInstall);
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA foi instalado com sucesso');
+            installBtnNav.style.display = 'none';
+            installBtnHero.style.display = 'none';
+            salvarAcesso();
+        });
     </script>
 </body>
 </html>
