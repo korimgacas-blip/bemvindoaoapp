@@ -4,27 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <title>O App do Pobre · Controle financeiro offline e privado</title>
+    <title>O App do Pobre | Controle Financeiro Offline e Privado</title>
     
     <script>
-        // Redirecionamento instantâneo se o usuário já acessou o app
+        // Redirecionamento automático se o usuário já conhecer o app
         if (localStorage.getItem('landpage_app_pobre_acessada') === 'true') {
             window.location.replace('https://oappdopobre.oseuapp.workers.dev/');
         }
     </script>
 
-    <meta name="description" content="O controle financeiro feito para a vida real. 100% gratuito, offline, sem anúncios e com privacidade absoluta na tela do seu celular.">
-    <meta name="keywords" content="app financeiro, controle de gastos, organização de contas, finanças pessoais, app offline, privacidade, o app do pobre">
+    <meta name="description" content="O gerenciador financeiro feito para a vida real. 100% offline, sem anúncios, instalável no PC e Celular (PWA) e com privacidade absoluta.">
+    <meta name="keywords" content="app financeiro, controle de gastos, finanças pessoais, app offline, PWA, privacidade, relatórios financeiros">
     <meta name="author" content="O App do Pobre">
     <meta name="theme-color" content="#0f172a">
     
-    <link rel="icon" href="logo.jpg">
-    <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- Variáveis de Marca --- */
         :root {
             --primary: #3B82F6;
             --primary-hover: #2563eb;
@@ -38,10 +38,11 @@
             --text-sec: #94A3B8;
             
             --glass-bg: rgba(30, 41, 59, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --radius-lg: 24px;
+            --radius-md: 16px;
         }
 
-        /* --- Resets e Base --- */
         * {
             margin: 0;
             padding: 0;
@@ -54,11 +55,33 @@
             font-family: 'Inter', sans-serif;
             color: var(--text-main);
             line-height: 1.6;
-            min-height: 100vh;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.1), transparent 25%);
+            position: relative;
+        }
+
+        /* Efeitos de Fundo Modernos */
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .bg-glow-right {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            bottom: -100px;
+            right: -100px;
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
         }
 
         .container {
@@ -67,62 +90,51 @@
             padding: 0 24px;
         }
 
-        /* --- Navegação --- */
-        nav {
-            padding: 24px 0;
+        /* Header / Nav */
+        header {
+            padding: 32px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: fadeInDown 0.8s ease-out;
+            animation: fadeDown 0.8s ease;
         }
 
-        .brand {
+        .logo {
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             letter-spacing: -0.5px;
         }
 
-        .brand img {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+        .logo i {
+            color: var(--primary);
         }
 
-        .brand span { color: var(--primary); }
-
-        /* --- Hero Section --- */
+        /* Hero Section */
         .hero {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-            min-height: 75vh;
-            padding: 40px 0;
-        }
-
-        .hero-content {
-            animation: fadeInLeft 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            padding: 80px 0 60px;
+            text-align: center;
+            animation: fadeUp 1s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
 
         .badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--income);
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #60A5FA;
             padding: 8px 16px;
             border-radius: 100px;
             font-size: 0.85rem;
-            font-weight: 700;
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-weight: 600;
             margin-bottom: 24px;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 3.8rem);
+            font-size: clamp(2.5rem, 6vw, 4rem);
             font-weight: 800;
             line-height: 1.1;
             letter-spacing: -1px;
@@ -130,300 +142,266 @@
         }
 
         .hero h1 span {
-            background: linear-gradient(135deg, #3B82F6, #10B981);
+            background: linear-gradient(135deg, #60A5FA, #3B82F6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: clamp(1rem, 2vw, 1.25rem);
             color: var(--text-sec);
-            margin-bottom: 32px;
-            max-width: 480px;
-        }
-
-        .cta-group {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+            max-width: 650px;
+            margin: 0 auto 40px;
         }
 
         .btn-primary {
-            background: var(--primary);
-            color: #fff;
-            text-decoration: none;
-            padding: 18px 32px;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: 700;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 20px 40px;
+            border-radius: 100px;
+            text-decoration: none;
             border: none;
             cursor: pointer;
-            box-shadow: 0 8px 25px var(--primary-glow);
             transition: all 0.3s ease;
-            width: fit-content;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
         }
 
         .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
             background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px var(--primary-glow);
         }
 
         .btn-primary:active {
             transform: translateY(0);
         }
 
-        .security-note {
-            font-size: 0.85rem;
-            color: var(--text-sec);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* --- Hero Visual --- */
-        .hero-visual {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: fadeInRight 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .glow-circle {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: var(--income);
-            filter: blur(100px);
-            opacity: 0.2;
-            z-index: 0;
-            border-radius: 50%;
-        }
-
-        .hero-image {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 380px;
-            border-radius: 32px;
-            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--glass-border);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        /* --- Features Section --- */
+        /* Features Grid */
         .features {
-            padding: 80px 0;
-            border-top: 1px solid var(--glass-border);
+            padding: 60px 0;
         }
 
-        .section-header {
+        .section-title {
             text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
             font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 12px;
+            font-weight: 700;
+            margin-bottom: 48px;
         }
 
-        .section-header p {
-            color: var(--text-sec);
-            font-size: 1.1rem;
-        }
-
-        .features-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 24px;
         }
 
-        .feature-card {
+        .card {
             background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            padding: 32px 24px;
-            border-radius: 24px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: transform 0.3s ease, border-color 0.3s;
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        .feature-card:hover {
+        .card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary);
+            border-color: rgba(59, 130, 246, 0.4);
         }
 
-        .feature-icon {
+        .card-icon {
             width: 56px;
             height: 56px;
             background: rgba(59, 130, 246, 0.1);
-            color: var(--primary);
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            color: #60A5FA;
             margin-bottom: 20px;
         }
 
-        .feature-card h3 {
-            font-size: 1.2rem;
+        .card h3 {
+            font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 12px;
         }
 
-        .feature-card p {
-            font-size: 0.95rem;
+        .card p {
             color: var(--text-sec);
+            font-size: 0.95rem;
         }
 
-        /* --- Footer --- */
+        /* Footer CTA */
+        .cta-bottom {
+            text-align: center;
+            padding: 80px 0;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 40px;
+        }
+
+        .cta-bottom h2 {
+            font-size: 2.2rem;
+            margin-bottom: 24px;
+        }
+
         footer {
             text-align: center;
-            padding: 40px 0;
-            border-top: 1px solid var(--glass-border);
+            padding: 32px 0;
             color: var(--text-sec);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* --- Animações --- */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+        /* Animações */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes fadeInLeft {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fadeInDown {
+
+        @keyframes fadeDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- Responsividade --- */
-        @media (max-width: 900px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 60px;
-                padding-top: 20px;
-            }
-            .hero p { margin: 0 auto 32px auto; }
-            .cta-group { align-items: center; }
-            .hero-image { max-width: 280px; }
-        }
-
-        @media (max-width: 480px) {
-            .container { padding: 0 20px; }
-            .hero h1 { font-size: 2.2rem; }
-            .btn-primary { width: 100%; }
+        @media (max-width: 768px) {
+            .hero { padding: 40px 0; }
+            .btn-primary { width: 100%; padding: 18px 20px; }
+            .card { padding: 24px; }
         }
     </style>
 </head>
 <body>
 
+    <div class="bg-glow"></div>
+    <div class="bg-glow-right"></div>
+
     <div class="container">
-        <nav>
-            <div class="brand">
-                <img src="logo.jpg" alt="Logo">
-                O App do <span>Pobre</span>
+        <header>
+            <div class="logo">
+                <i class="fas fa-wallet"></i> O App do Pobre
             </div>
-            </nav>
+            <div style="font-size: 0.85rem; color: var(--text-sec); font-weight: 500;">
+                <i class="fas fa-check-circle" style="color: var(--income);"></i> 100% Grátis
+            </div>
+        </header>
 
         <section class="hero">
-            <div class="hero-content">
-                <div class="badge">
-                    <i class="fas fa-check-circle"></i> Sem pegadinhas. 100% Grátis.
-                </div>
-                <h1>Organize seu dinheiro na <span>vida real.</span></h1>
-                <p>Liberte-se das planilhas complicadas e das mensalidades. Controle suas finanças, preveja seus gastos com Inteligência Artificial e automatize contas fixas sem depender de internet.</p>
-                
-                <div class="cta-group">
-                    <button class="btn-primary" id="btnAcessarApp">
-                        Acessar o App Agora <i class="fas fa-arrow-right"></i>
-                    </button>
-                    <div class="security-note">
-                        <i class="fas fa-shield-alt" style="color: var(--primary);"></i> 
-                        Zero nuvem. Seus dados ficam protegidos apenas no seu celular.
-                    </div>
-                </div>
+            <div class="badge">
+                <i class="fas fa-shield-alt"></i> Nenhuma conta de login necessária
             </div>
-
-            <div class="hero-visual">
-                <div class="glow-circle"></div>
-                <img src="logo.jpg" alt="O App do Pobre Visual" class="hero-image">
+            <h1>O controle financeiro para a <span>vida real.</span></h1>
+            <p>Esqueça planilhas complexas e apps que vendem seus dados. Organize seu dinheiro com gráficos inteligentes, funcionamento offline e privacidade absoluta.</p>
+            
+            <button class="btn-primary" id="btnAcessarApp">
+                <i class="fas fa-rocket"></i> Acessar o App Agora
+            </button>
+            
+            <div style="margin-top: 24px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-sec);">
+                <span><i class="fas fa-bolt" style="color: #F59E0B;"></i> Zero burocracia</span>
+                <span><i class="fas fa-ad" style="text-decoration: line-through; color: var(--expense);"></i> Sem anúncios</span>
+                <span><i class="fas fa-laptop-code" style="color: var(--primary);"></i> Código independente</span>
             </div>
         </section>
 
         <section class="features">
-            <div class="section-header">
-                <h2>O que fazemos de diferente?</h2>
-                <p>Recursos de app premium, feitos para democratizar o seu controle financeiro.</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-user-shield"></i></div>
-                    <h3>Privacidade de Verdade</h3>
-                    <p>Ao contrário dos outros apps, nós não enviamos seu histórico financeiro para servidores na internet. Tudo fica criptografado no armazenamento do seu navegador.</p>
+            <h2 class="section-title">Por que o App do Pobre é diferente?</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon" style="color: #A855F7; background: rgba(168, 85, 247, 0.1);">
+                        <i class="fas fa-laptop-mobile"></i>
+                    </div>
+                    <h3>Desktop & Mobile (PWA)</h3>
+                    <p>Acesse do computador ou instale direto na tela inicial do seu celular. Ele se comporta como um app nativo, ocupando quase zero da sua memória.</p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-wifi"></i></div>
-                    <h3>Funciona Offline</h3>
-                    <p>Sem internet no metrô? Sem problemas. O app carrega instantaneamente, não consome seu pacote de dados e você não perde o hábito de anotar gastos.</p>
+                <div class="card">
+                    <div class="card-icon" style="color: #F59E0B; background: rgba(245, 158, 11, 0.1);">
+                        <i class="fas fa-wifi-slash"></i>
+                    </div>
+                    <h3>100% Offline</h3>
+                    <p>No metrô, na estrada ou sem pacote de dados. O app funciona perfeitamente sem internet. Você lança seus gastos na hora que eles acontecem.</p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
-                    <h3>Previsão do Bolso (IA)</h3>
-                    <p>O algoritmo lê seu ritmo de gastos e calcula um <strong>limite diário seguro</strong>. Saiba exatamente quanto você pode gastar hoje para não entrar no vermelho.</p>
+                <div class="card">
+                    <div class="card-icon" style="color: #10B981; background: rgba(16, 185, 129, 0.1);">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3>Privacidade Absoluta</h3>
+                    <p>O seu dinheiro é problema seu. Todos os seus dados ficam criptografados e salvos localmente no seu aparelho. Não usamos banco de dados na nuvem.</p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-sync"></i></div>
-                    <h3>Piloto Automático</h3>
-                    <p>Registre aluguéis, parcelamentos e assinaturas uma única vez. O app cria um mapa futuro e te mostra quanto da sua renda já está comprometida.</p>
+                <div class="card">
+                    <div class="card-icon" style="color: #EC4899; background: rgba(236, 72, 153, 0.1);">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Gráficos Inteligentes</h3>
+                    <p>Entenda para onde vai o seu dinheiro. Visualizações claras por categoria, balanço do mês e relatórios profissionais em PDF para você baixar.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon" style="color: #3B82F6; background: rgba(59, 130, 246, 0.1);">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>Automação de Contas</h3>
+                    <p>Registre a conta de luz, aluguel ou parcelamento do cartão apenas uma vez. O sistema projeta e agenda os próximos meses automaticamente.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon" style="color: #F43F5E; background: rgba(244, 63, 94, 0.1);">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Previsão do Bolso</h3>
+                    <p>O algoritmo aprende sua rotina de gastos e calcula um limite diário seguro, avisando se você corre o risco de terminar o mês no vermelho.</p>
                 </div>
             </div>
         </section>
 
+        <section class="cta-bottom">
+            <h2>Pronto para assumir o controle?</h2>
+            <p style="color: var(--text-sec); margin-bottom: 32px; font-size: 1.1rem;">Nenhuma assinatura. Nenhum cartão de crédito. Comece em 5 segundos.</p>
+            <button class="btn-primary" id="btnAcessarAppBottom" style="padding: 16px 32px; font-size: 1rem;">
+                Abrir Meu Organizador
+            </button>
+        </section>
+
         <footer>
-            <p><strong>O App do Pobre</strong> &copy; 2026. Feito com foco na sua liberdade financeira.</p>
-            <p style="margin-top: 8px; font-size: 0.8rem; opacity: 0.7;">Instalável direto na sua tela inicial como um App Nativo (PWA).</p>
+            <p><strong>O App do Pobre</strong> &copy; 2026. Desenvolvido com foco na sua liberdade e privacidade financeira.</p>
+            <p style="margin-top: 8px; opacity: 0.7;">Os dados inseridos no aplicativo permanecem exclusivamente no seu dispositivo.</p>
         </footer>
     </div>
 
     <script>
-        // Lógica de Redirecionamento e Registro de Acesso
-        document.addEventListener('DOMContentLoaded', () => {
-            const btn = document.getElementById('btnAcessarApp');
-            if (!btn) return;
-
-            // URL principal onde a lógica do app financeiro real roda
+        (function() {
+            // URL do aplicativo principal
             const APP_URL = 'https://oappdopobre.oseuapp.workers.dev/';
 
-            btn.addEventListener('click', (e) => {
+            function acessarApp(e) {
                 e.preventDefault();
-                
-                // Grava a flag para nunca mais mostrar esta landing page ao usuário neste aparelho
+                // Marca no navegador que o usuário já viu a apresentação
                 localStorage.setItem('landpage_app_pobre_acessada', 'true');
                 
-                // Redireciona para o Web App
-                window.location.replace(APP_URL);
-            });
-        });
+                // Feedback visual do botão
+                const btn = e.currentTarget;
+                btn.style.transform = 'scale(0.96)';
+                
+                setTimeout(() => { 
+                    window.location.replace(APP_URL); 
+                }, 150);
+            }
+
+            // Atrela os eventos aos botões
+            document.getElementById('btnAcessarApp').addEventListener('click', acessarApp);
+            document.getElementById('btnAcessarAppBottom').addEventListener('click', acessarApp);
+        })();
     </script>
 </body>
 </html>
